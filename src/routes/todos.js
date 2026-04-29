@@ -1,15 +1,19 @@
 const express = require('express');
-const store = require('../store');
+const {
+  listTodos,
+  createTodo,
+  updateTodo,
+  toggleTodoCompletion,
+  deleteTodo,
+} = require('../controllers/todosController');
+const { asyncHandler } = require('../utils/asyncHandler');
 
 const router = express.Router();
 
-// ============================================================
-// GET /todos — List all todos
-// ✅ Already implemented as a reference pattern
-// ============================================================
-router.get('/', (req, res) => {
-  const todos = store.getAll();
-  res.json(todos);
-});
+router.get('/', asyncHandler(listTodos));
+router.post('/', asyncHandler(createTodo));
+router.put('/:id', asyncHandler(updateTodo));
+router.patch('/:id/complete', asyncHandler(toggleTodoCompletion));
+router.delete('/:id', asyncHandler(deleteTodo));
 
 module.exports = router;
